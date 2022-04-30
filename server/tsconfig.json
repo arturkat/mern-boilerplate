@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "target": "es2022",
+    "typeRoots": ["node_modules/@types"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "useUnknownInCatchVariables": false,
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "pretty": true,
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "declaration": true,
+    "baseUrl": "./src",
+    "paths": {
+      "@/*": ["*"],
+      "@config": ["config"],
+      "@databases": ["databases"],
+      "@routes/*": ["routes/*"],
+      "@controllers/*": ["controllers/*"],
+      "@services/*": ["services/*"],
+      "@utils/*": ["utils/*"],
+      "@interfaces/*": ["interfaces/*"],
+      "@models/*": ["models/*"],
+      "@dtos/*": ["dtos/*"],
+      "@exceptions/*": ["exceptions/*"],
+      "@middlewares/*": ["middlewares/*"]
+    }
+  },
+  "include": ["src/**/*.ts", "src/**/*.json", "./.env.development.local"],
+  "exclude":["node_modules"]
+}
