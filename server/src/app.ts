@@ -55,7 +55,7 @@ class App {
     this.app.use(cookieParser())
     this.app.use(cors({
       credentials: true,
-      origin: [CLIENT_URL]
+      origin: [CLIENT_URL, 'http://192.168.1.2:8080' , 'http://127.0.0.1:8080']
       // credentials: CREDENTIALS,
     }))
     this.app.use(helmet())

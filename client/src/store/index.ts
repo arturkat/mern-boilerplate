@@ -1,25 +1,19 @@
-import {legacy_createStore as createStore, applyMiddleware, combineReducers} from 'redux'
-import thunk from 'redux-thunk'
-import {composeWithDevTools} from '@redux-devtools/extension'
+import { configureStore } from '@reduxjs/toolkit'
+import counterReducer from './slices/counterSlice'
+import authReducer from './slices/authSlice'
+import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux'
 
-import counterReducer from './counterReducer'
-import userReducer from './userReducer'
-
-const rootReducer = combineReducers({
-  counter: counterReducer,
-  user: userReducer
+export const store = configureStore({
+  reducer: {
+    auth: authReducer,
+    counter: counterReducer,
+  },
 })
 
-const store = createStore(
-  rootReducer,
-  composeWithDevTools(
-    applyMiddleware(thunk)
-  )
-)
+// Inferred type: {counter: PostsState, comments: CommentsState, users: UsersState}
+export type StateType = ReturnType<typeof store.getState>
+export type AppDispatch = typeof store.dispatch
 
-export default store
-
-// console.log(store)
-// console.log(store.getState())
-// store.subscribe(() => console.log(store.getState()))
-// store.dispatch({type: 'PLUS'} )
+// HOOKs
+export const useAppSelector: TypedUseSelectorHook<StateType> = useSelector
+export const useAppDispatch = () => useDispatch<AppDispatch>()

@@ -9,15 +9,14 @@ const errorMiddleware = (error: HttpException, req: Request, res: Response, next
     if (error instanceof HttpException) {
       const status: number = error.status || 500
       const message: string = error.message || 'Something went wrong'
-
       logger.error(`[${req.method}] ${req.path} >> StatusCode:: ${status}, Message:: ${message}`)
-      res.status(status).json({message, error: true})
+      return res.status(status).json({message: message})
+      // res.status(status).send(error)
     } else {
       // @ts-ignore
       const message = error?.message || 'Unexpected error'
       logger.error(`[${req.method}] ${req.path} [!!!] >> Message:: ${message}`)
-      console.log(error)
-      res.status(500).json({message, error: true})
+      return res.status(500).json({message: message})
     }
   } catch (error) {
     next(error)

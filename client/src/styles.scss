@@ -1,6 +1,83 @@
- @import "styles/hello";
+@tailwind base;
+
+@layer base {
+  html {
+    @apply text-gray-600 bg-gray-100 scroll-smooth;
+  }
+  h1 {
+    @apply text-5xl;
+  }
+  h2 {
+    @apply text-4xl;
+  }
+  h3 {
+    @apply text-3xl;
+  }
+  h4 {
+    @apply text-2xl;
+  }
+  h5 {
+    @apply text-xl;
+  }
+  h6 {
+    @apply text-lg;
+  }
+
+  .block:not(:last-child) {
+    margin-bottom: 1.5rem;
+  }
+}
+
+
+@tailwind components;
+
+@import "styles/hello";
 
 body {
-  background-color: rgba(0,0,0,0.1);
+  //background-color: rgba(0,0,0,0.1);
   // background: url(../media/turtle.jpg);
 }
+
+@layer components {
+  .btn--pop-anim {
+    animation: button-pop .25s ease-out;
+    transition-property: transform;
+    transition-duration: .2s;
+    transition-timing-function: cubic-bezier(.4, 0, .2, 1);
+
+    &:active:focus {
+      animation: none;
+      transform: scale(.95);
+    }
+  }
+  @keyframes button-pop {
+    0% {
+      transform: scale(.95);
+    }
+    40% {
+      transform: scale(1.02);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+}
+
+@layer components {
+  .card {
+    background-color: theme('colors.white');
+    border-radius: theme('borderRadius.lg');
+    padding: theme('spacing.6');
+    box-shadow: theme('boxShadow.xl');
+  }
+}
+
+// FIX for autofill floating label
+#app input:not(:placeholder-shown) ~ label,
+#app input:-webkit-autofill ~ label
+{
+  margin-bottom: -1px;
+}
+
+
+@tailwind utilities;

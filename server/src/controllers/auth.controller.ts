@@ -13,8 +13,12 @@ class AuthController {
       const singUpUserData: IUser = await this.authService.signUp(userData)
       const resUserDto = new ResponseUserDto(singUpUserData)
 
-      res.status(201).json({data: resUserDto, message: 'User signed up'})
+      res.status(201).json({
+        data: resUserDto,
+        message: 'User signed up'
+      })
     } catch (error) {
+      console.log(`-->> signUp:`, error)
       next(error)
     }
   }
@@ -23,11 +27,15 @@ class AuthController {
     try {
       const userData: CreateUserDto = req.body
       const {accessToken, refreshToken, findUser} = await this.authService.logIn(userData)
+      // console.log('findUser:',findUser)
       const resUserDto = new ResponseUserDto(findUser)
 
       res.cookie('accessToken', accessToken.token, {maxAge: accessToken.expiresIn})
       res.cookie('refreshToken', refreshToken.token, {maxAge: refreshToken.expiresIn, httpOnly: true})
-      res.status(200).json({data: resUserDto, message: 'User logged in'})
+      res.status(200).json({
+        data: resUserDto,
+        message: 'User logged in'
+      })
     } catch (error) {
       next(error)
     }
@@ -40,7 +48,9 @@ class AuthController {
 
       res.clearCookie('accessToken')
       res.clearCookie('refreshToken')
-      res.status(200).json({message: 'User logged out'})
+      res.status(200).json({
+        message: 'User logged out'
+      })
     } catch (error) {
       next(error)
     }
@@ -49,12 +59,17 @@ class AuthController {
   refresh = async (req:RequestWithUser, res:Response, next:NextFunction) => {
     try {
       const {refreshToken: refreshTokenFromCookie} = req.cookies
+      // console.log(`-->> refreshTokenFromCookie: ${refreshTokenFromCookie}`)
+      // console.log(`-->> req.cookies: ${JSON.stringify(req.cookies)}`)
       const {accessToken, refreshToken, findUser} = await this.authService.refresh(refreshTokenFromCookie)
       const resUserDto = new ResponseUserDto(findUser)
 
-      res.cookie('accessToken', accessToken.token, {maxAge: accessToken.expiresIn, httpOnly: true})
+      res.cookie('accessToken', accessToken.token, {maxAge: accessToken.expiresIn})
       res.cookie('refreshToken', refreshToken.token, {maxAge: refreshToken.expiresIn, httpOnly: true})
-      res.status(200).json({data: resUserDto, message: 'Token refreshed'})
+      res.status(200).json({
+        data: resUserDto,
+        message: 'Token refreshed'
+      })
     } catch (error) {
       next(error)
     }
@@ -62,7 +77,14 @@ class AuthController {
 
   authed = async (req:RequestWithUser, res:Response, next:NextFunction) => {
     try {
-      res.status(200).json({message: 'Is user authed', authed: !!req.authed})
+      let resUserDto = null;
+      if (req.authed && req.user) {
+        resUserDto = new ResponseUserDto(req.user);
+      }
+      res.status(200).json({
+        data: {...resUserDto, authed: !!req.authed},
+        message: 'Is user authed',
+      })
     } catch (error) {
       next(error)
     }

@@ -2,7 +2,7 @@ import React, {useState, useContext} from 'react'
 import AuthService from '../services/AuthService'
 import {useDispatch, useSelector} from 'react-redux'
 import {addUserAction, removeUserAction} from '../store/userReducer'
-import {fetchManyUsers} from '../store/asyncActions/user'
+import {fetchManyUsers, loginUser, logoutUser, signupUser, authedUser, refreshUser} from '../store/async/userAsyncActions'
 
 const Form = () => {
 
@@ -57,22 +57,41 @@ const Form = () => {
       <br/>
 
       <form onSubmit={e => e.preventDefault()}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-        />
-        <button onClick={() => AuthService.login(email, password)}>
-          Log In
-        </button>
-        <button>Sign Up</button>
+        <fieldset>
+          <legend>LOGIN ajax</legend>
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+          />
+          {/* @ts-ignore */}
+          <button onClick={() => dispatch(loginUser(email, password))}>
+            Log In
+          </button>
+          {/* @ts-ignore */}
+          <button onClick={() => dispatch(signupUser(email, password))}>
+            Sign Up
+          </button>
+          {/* @ts-ignore */}
+          <button onClick={() => dispatch(logoutUser(email, password))}>
+            Log Out
+          </button>
+          {/* @ts-ignore */}
+          <button onClick={() => dispatch(authedUser())}>
+            Authed
+          </button>
+          {/* @ts-ignore */}
+          <button onClick={() => dispatch(refreshUser())}>
+            Refresh
+          </button>
+        </fieldset>
       </form>
 
       <br/>

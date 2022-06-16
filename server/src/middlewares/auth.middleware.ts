@@ -10,7 +10,10 @@ const authMiddleware = async (req: RequestWithUser, res: Response, next: NextFun
   try {
     const authCookieToken = req.cookies['accessToken'] ? req.cookies['accessToken'] : null
     const authHeaderToken = req.header('Authorization') ? req.header('Authorization').split('Bearer ')[1] : null
-    const authToken = authCookieToken || authHeaderToken || null
+    let authToken = authCookieToken || authHeaderToken || null
+
+    // authToken = '0';
+    console.log(`-->> authToken: ${authToken}`)
 
     if (authToken) {
       const verificationResponse = (await jwt.verify(authToken, JWT_ACCESS_SECRET)) as DataStoredInToken
@@ -26,11 +29,11 @@ const authMiddleware = async (req: RequestWithUser, res: Response, next: NextFun
       }
     } else {
       req.authed = false
-      next(new HttpException(404, 'Authentication token missing'))
+      next(new HttpException(401, 'Authentication token missing'))
     }
   } catch(error) {
     req.authed = false
-    next(new HttpException(401, 'Wrong authentication token'))
+    next(new HttpException(401, 'Wrong authentication token _'))
   }
 }
 

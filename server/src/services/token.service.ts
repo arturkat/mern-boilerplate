@@ -10,11 +10,11 @@ class TokenService {
 
   createTokens(user: IUser): {accessToken: TokenData, refreshToken: TokenData} {
     const dataStoredInToken: DataStoredInToken = { _id: user._id }
-    const accessTokenExpiresIn: number = 15 * 1000 // 15m
+    const accessTokenExpiresIn: number = 60 * 60 * 1000 // 60 * 60sec
     const refreshTokenExpiresIn: number = 30 * 24 * 60 * 60 * 1000 // 30d
 
-    const accessToken = jwt.sign(dataStoredInToken, JWT_ACCESS_SECRET, {expiresIn: accessTokenExpiresIn})
-    const refreshToken = jwt.sign(dataStoredInToken, JWT_REFRESH_SECRET, {expiresIn: refreshTokenExpiresIn})
+    const accessToken = jwt.sign(dataStoredInToken, JWT_ACCESS_SECRET, {expiresIn: accessTokenExpiresIn + 'ms'})
+    const refreshToken = jwt.sign(dataStoredInToken, JWT_REFRESH_SECRET, {expiresIn: refreshTokenExpiresIn + 'ms'})
 
     return {
       accessToken: {

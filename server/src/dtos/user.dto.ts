@@ -16,9 +16,11 @@ export class ValidateUserDto {
 // For sending in response
 export class ResponseUserDto {
   public email: string
+  public _id: string
 
   constructor(model) {
     this.email = model.email
+    this._id = model._id
   }
 }
 

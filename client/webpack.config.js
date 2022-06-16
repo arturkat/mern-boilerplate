@@ -9,11 +9,11 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 const isDevelopment = process.env.NODE_ENV === 'development'
-console.log('isDevelopment: ', isDevelopment)
 const isProduction = process.env.NODE_ENV === 'production'
+console.log('isDevelopment: ', isDevelopment)
 console.log('isProduction: ', isProduction)
 
-module.exports = {
+const config = {
   entry: {
     main: './src/index.tsx'
   },
@@ -28,7 +28,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
+        test: /\.jsx?$/i,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
@@ -38,7 +38,7 @@ module.exports = {
         }
       },
       {
-        test: /\.tsx?$/,
+        test: /\.tsx?$/i,
         exclude: /node_modules/,
         use: [
           {
@@ -47,24 +47,39 @@ module.exports = {
         ]
       },
       {
-        test: /\.css$/,
+        test: /\.css$/i,
         use: [
-          isProduction ? MiniCssExtractPlugin.loader : 'style-loader', // 'style-loader' during development, injects loaded styles into the document at runtime
-          // MiniCssExtractPlugin.loader,
+          // 'style-loader' - creates `style` nodes from JS strings, during development injects loaded styles into the document at runtime
+          isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
+          // 'css-loader' - translates CSS into CommonJS
           {
             loader: 'css-loader', // Parses CSS files, resolving external resources, such as images, fonts, and additional style imports
+            options: {
+              importLoaders: 1
+            }
           },
+          {
+            loader: 'postcss-loader'
+          }
         ]
       },
       {
-        test: /\.s[ac]ss$/,
+        test: /\.s[ac]ss$/i,
         use: [
           isProduction ? MiniCssExtractPlugin.loader : "style-loader",
-          // MiniCssExtractPlugin.loader,
           {
             loader: "css-loader",
             options: {
-              importLoaders: 2 // process @import-ed files using the loaders that follow it
+              importLoaders: 3 // process @import-ed files using the loaders that follow it
+              // 0 => no loaders (default);
+              // 1 => resolve-url-loader;
+              // 2 => resolve-url-loader, sass-loader
+            }
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              sourceMap: true
             }
           },
           "resolve-url-loader", // make relative imports work from @imported Sass files
@@ -90,7 +105,7 @@ module.exports = {
       // },
       {
         // Asset Modules - https://webpack.js.org/guides/asset-modules/
-        test: /\.(woff(2)?|eot|ttf|otf)$/,
+        test: /\.(woff(2)?|eot|ttf|otf)$/i,
         type: 'asset',
         parser: {
           dataUrlCondition: {
@@ -134,3 +149,5 @@ module.exports = {
   },
   devtool: isDevelopment ? 'inline-source-map' : 'source-map'
 }
+
+module.exports = config
