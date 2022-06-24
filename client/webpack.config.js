@@ -23,6 +23,10 @@ const config = {
     publicPath: '/'
   },
   resolve: {
+    alias: {
+      '@': path.resolve(__dirname, 'src'),
+      '@comp': path.resolve(__dirname, 'src/components')
+    },
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.json', '.css', '.scss', '.sass']
   },
   module: {

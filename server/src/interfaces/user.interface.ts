@@ -1,5 +1,7 @@
+import { Schema } from 'mongoose'
+
 export interface IUser {
-  _id: string;
-  email: string;
-  password: string;
+  _id: Schema.Types.ObjectId
+  email: string
+  password: string
 }

@@ -3,14 +3,16 @@ import { IUser } from '@interfaces/user.interface'
 
 const userSchema: Schema = new Schema({
   email: {
-    type: String,
+    type: Schema.Types.String,
     required: true,
     unique: true
   },
   password: {
-    type: String,
+    type: Schema.Types.String,
     required: true
   }
+}, {
+  timestamps: true
 })
 
 const userModel = model<IUser & Document>('User', userSchema)

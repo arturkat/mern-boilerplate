@@ -3,7 +3,7 @@ import {Router} from "express"
 import AuthController from "@controllers/auth.controller"
 import validationMiddleware from '@middlewares/validation.middleware'
 import authMiddleware from '@middlewares/auth.middleware'
-import { ValidateUserDto} from '@dtos/user.dto'
+import {ValidateResetPasswordDto, ValidateUserDto} from '@dtos/user.dto'
 
 class AuthRoute implements IRoutes {
   public path = '/api'
@@ -20,6 +20,8 @@ class AuthRoute implements IRoutes {
     this.router.post(`${this.path}/logout`, this.authController.logOut)
     this.router.post(`${this.path}/authed`, authMiddleware, this.authController.authed)
     this.router.post(`${this.path}/refresh`, this.authController.refresh)
+    this.router.post(`${this.path}/reset-password`, validationMiddleware(ValidateResetPasswordDto, 'body'), this.authController.resetPassword)
+    this.router.get(`${this.path}/confirm-password-reset/:token`, this.authController.confirmPasswordReset)
   }
 }
 

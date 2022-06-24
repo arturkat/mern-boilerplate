@@ -1,7 +1,10 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 import Cookies from 'js-cookie'
-import {IUser} from '../../types/user'
-import AuthService from '../../services/AuthService'
+import {IUser} from '@/types/user'
+import AuthService from '@/services/AuthService'
+import {setToast} from './toasterSlice'
+import {useAppDispatch} from '@/store'
+import { setPost } from './postsSlice'
 
 export interface AuthState {
   user: IUser | null
@@ -38,12 +41,17 @@ export const authSlice = createSlice({
 
 export const {setUser, setAuth, setLoading} = authSlice.actions
 
+export default authSlice.reducer
+
 /* Async Actions */
 
 export const loginUser = (email, password) => async (dispatch, getState) => {
   try {
     const loginResponse = await AuthService.login(email, password)
     console.log('-> loginUser:success:', loginResponse)
+
+    dispatch(setToast(loginResponse?.data?.message))
+    // dispatch(setToast(`reprehenderit quos placeat velit minima officia dolores impedit repudiandae molestiae`))
 
     const accessToken = Cookies.get('accessToken')
     localStorage.setItem('accessToken', accessToken)
@@ -53,7 +61,9 @@ export const loginUser = (email, password) => async (dispatch, getState) => {
 
     return loginResponse
   } catch(error) {
+    // console.log('-> loginUser:error:', error)
     console.log('-> loginUser:error:', error.response?.data)
+    dispatch(setToast(error.response?.data?.message))
   }
 }
 
@@ -65,9 +75,12 @@ export const signupUser = (email, password) => async function(dispatch, getState
     const accessToken = Cookies.get('accessToken')
     localStorage.setItem('accessToken', accessToken)
 
+    dispatch(setToast(signupResponse?.data?.message))
+
     return signupResponse
   } catch(error) {
     console.log('-> signupUser:error:', error.response?.data)
+    dispatch(setToast(error.response?.data?.message))
   }
 }
 
@@ -76,15 +89,17 @@ export const logoutUser = () => async function(dispatch, getState) {
     const logoutResponse = await AuthService.logout()
     console.log('-> logoutUser:success:', logoutResponse)
 
-    // Cookies.remove('accessToken') // done by server
+    Cookies.remove('accessToken') // also it gets removed by server headers
     localStorage.removeItem('accessToken')
 
     dispatch(setUser(null))
     dispatch(setAuth(false))
+    dispatch(setToast(logoutResponse?.data?.message))
 
     return logoutResponse
   } catch(error) {
     console.log('-> logoutUser:error:', error.response?.data)
+    dispatch(setToast(error.response?.data?.message))
   }
 }
 
@@ -99,17 +114,19 @@ export const refreshUser = () => async function(dispatch, getState) {
 
     dispatch(setUser(refreshResponse?.data?.data))
     dispatch(setAuth(true))
+    dispatch(setToast(refreshResponse?.data?.message))
 
     return refreshResponse
   } catch(error) {
     console.log('-> refreshUser:error:', error.response?.data)
 
+    dispatch(setUser(null))
+    dispatch(setAuth(false))
+    dispatch(setToast(error.response?.data?.message))
+
     // Cookies.remove('accessToken')
     // Cookies.remove('refreshToken')
     // localStorage.removeItem('accessToken')
-
-    dispatch(setUser(null))
-    dispatch(setAuth(false))
   }
 }
 
@@ -120,10 +137,12 @@ export const authedUser = () => async (dispatch, getState) => {
 
     dispatch(setAuth(authedResponse?.data?.data?.authed))
 
+    dispatch(setToast(authedResponse?.data?.message))
+
     return authedResponse
   } catch(error) {
     console.log('-> authedUser:error:', error.response?.data)
+    dispatch(setToast(error.response?.data?.message))
   }
 }
 
-export default authSlice.reducer

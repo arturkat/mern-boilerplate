@@ -1,5 +1,5 @@
 import React from 'react'
-import LoginForm from '../feature/LoginFrom'
+import LoginForm from '@/components/feature/LoginFrom'
 
 const AuthScreen = () => {
   return (

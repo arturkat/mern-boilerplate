@@ -9,7 +9,7 @@ import {IToken, DataStoredInToken, TokenData} from '@interfaces/token.interface'
 class TokenService {
 
   createTokens(user: IUser): {accessToken: TokenData, refreshToken: TokenData} {
-    const dataStoredInToken: DataStoredInToken = { _id: user._id }
+    const dataStoredInToken: DataStoredInToken = { _id: String(user._id) }
     const accessTokenExpiresIn: number = 60 * 60 * 1000 // 60 * 60sec
     const refreshTokenExpiresIn: number = 30 * 24 * 60 * 60 * 1000 // 30d
 

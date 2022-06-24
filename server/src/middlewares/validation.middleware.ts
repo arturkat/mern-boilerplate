@@ -12,7 +12,11 @@ const validationMiddleware = (
 ): RequestHandler => {
   return (req, res, next) => {
     const validationInstance = plainToInstance(type, req[value])
-    const validationResult: Promise<any> = validate(validationInstance, { skipMissingProperties, whitelist, forbidNonWhitelisted })
+    const validationResult: Promise<any> = validate(validationInstance, {
+      skipMissingProperties,
+      whitelist,
+      forbidNonWhitelisted
+    })
     validationResult.then((errors) => {
       if (errors.length > 0) {
         const message = errors.map((error: ValidationError) => Object.values(error.constraints)).join(', ')

@@ -1,4 +1,10 @@
 import React, {FC, ReactNode} from 'react'
+import resolveConfig from 'tailwindcss/resolveConfig'
+import tailwindConfig from '@/../tailwind.config.js'
+import Ripple from './Ripple'
+import './ubutton.scss'
+
+const fullConfig = resolveConfig(tailwindConfig)
 
 interface ButtonProps {
   children?: ReactNode
@@ -14,12 +20,15 @@ const UButton: FC<ButtonProps> = ({
   ...props
 }) => {
 
-  let classes = `btn--pop-anim disabled:opacity-50`
+  let classes = `btn--pop-anim disabled:opacity-50 `
+
   if (gray) {
     classes += `
+      relative
       px-5
       py-2.5
       rounded-lg
+      overflow-hidden
       text-gray-50
       bg-gray-500
       text-sm
@@ -41,9 +50,11 @@ const UButton: FC<ButtonProps> = ({
     `
   } else {
     classes += `
+      relative
       px-5
       py-2.5
       rounded-lg
+      overflow-hidden
       text-gray-50
       bg-indigo-500
       text-sm
@@ -71,6 +82,7 @@ const UButton: FC<ButtonProps> = ({
   return (
     <button {...props} type="button" className={classes}>
       {children}
+      {!props.disabled && <Ripple color={fullConfig.theme.colors.gray['50']} duration={1500} />}
     </button>
   )
 }

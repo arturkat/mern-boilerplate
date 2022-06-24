@@ -16,6 +16,7 @@ const errorMiddleware = (error: HttpException, req: Request, res: Response, next
       // @ts-ignore
       const message = error?.message || 'Unexpected error'
       logger.error(`[${req.method}] ${req.path} [!!!] >> Message:: ${message}`)
+      // console.trace()
       return res.status(500).json({message: message})
     }
   } catch (error) {

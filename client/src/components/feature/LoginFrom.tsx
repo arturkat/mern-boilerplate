@@ -1,9 +1,9 @@
 import React, {useState} from 'react'
-import UButton from '../UI/UButton'
-import {useAppDispatch, useAppSelector} from '../../store'
-import {loginUser, authedUser, signupUser, logoutUser, refreshUser, setAuth} from '../../store/slices/authSlice'
-import UTextInput from '../UI/UTextIntput'
 import { useLocation, useNavigate } from 'react-router-dom'
+import UButton from '@/components/UI/UButton'
+import {useAppDispatch, useAppSelector} from '@/store'
+import {loginUser, authedUser, signupUser, logoutUser, refreshUser, setAuth} from '@/store/slices/authSlice'
+import UTextInput from '@/components/UI/UTextIntput'
 
 const Form = () => {
   let navigate = useNavigate();
@@ -32,7 +32,7 @@ const Form = () => {
         <fieldset>
           <h3 className="mb-4 text-center">Auth Form</h3>
 
-          <div className="flex bg-gray-200 rounded px-6 gap-2">
+          <div className="flex bg-gray-200 rounded px-6 gap-2 mb-2">
             <span>isAuth: {JSON.stringify(isAuth)} </span>
             <span>isLoading: {JSON.stringify(isLoading)} </span>
           </div>

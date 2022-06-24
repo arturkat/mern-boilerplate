@@ -36,10 +36,10 @@ class App {
   public listen() {
     try {
       this.app.listen(this.port, () => {
-        logger.info(`=================================`);
+        // logger.info(`=================================`);
         logger.info(`======= ENV: ${this.env} =======`);
         logger.info(`🚀 App listening on the port ${this.port}`);
-        logger.info(`=================================`);
+        // logger.info(`=================================`);
         // console.log(`Connected successfully on port: ${this.port}`)
         // console.log(`NODE_ENV: ${this.env}`)
       })

@@ -1,0 +1,22 @@
+/* Click Animation */
+.btn--pop-anim {
+  animation: button-pop .25s ease-out;
+  transition: transform .1s cubic-bezier(.4, 0, .2, 1);
+
+  &:active:focus {
+    animation: none;
+    transform: scale(.98);
+  }
+}
+@keyframes button-pop {
+  0% {
+    transform: scale(.98);
+  }
+  40% {
+    transform: scale(1.02);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+

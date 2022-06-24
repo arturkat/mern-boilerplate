@@ -18,6 +18,7 @@ $api.interceptors.response.use((config) => {
   return config;
 },async (error) => {
   // console.log(`$api:error:`, error.config)
+
   const originalRequest = error.config;
   if (error.response.status == 401 && error.config && !error.config._isRetry) {
     originalRequest._isRetry = true;
@@ -30,6 +31,7 @@ $api.interceptors.response.use((config) => {
       console.log(`interceptor:user isn't authorized`)
     }
   }
+
   // return Promise.reject(error)
   throw error;
 })

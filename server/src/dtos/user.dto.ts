@@ -1,5 +1,9 @@
 import {IsEmail, IsNotEmpty, IsString, MaxLength, MinLength} from 'class-validator'
-import {IUser} from '@interfaces/user.interface'
+
+export type CreateUserDto = {
+  email: string
+  password: string
+}
 
 // For validation middleware
 export class ValidateUserDto {
@@ -13,6 +17,17 @@ export class ValidateUserDto {
   public password: string
 }
 
+export type ResetPasswordDto = {
+  email: string
+}
+
+// For validation middleware
+export class ValidateResetPasswordDto {
+  @IsEmail()
+  @IsNotEmpty()
+  public email: string
+}
+
 // For sending in response
 export class ResponseUserDto {
   public email: string
@@ -22,12 +37,4 @@ export class ResponseUserDto {
     this.email = model.email
     this._id = model._id
   }
-}
-
-// For type purpose
-export class CreateUserDto {
-  constructor (
-    public email: string,
-    public password: string
-  ) {}
 }

@@ -13,7 +13,7 @@ const authMiddleware = async (req: RequestWithUser, res: Response, next: NextFun
     let authToken = authCookieToken || authHeaderToken || null
 
     // authToken = '0';
-    console.log(`-->> authToken: ${authToken}`)
+    // console.log(`-->> authToken: ${authToken}`)
 
     if (authToken) {
       const verificationResponse = (await jwt.verify(authToken, JWT_ACCESS_SECRET)) as DataStoredInToken

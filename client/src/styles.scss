@@ -2,7 +2,7 @@
 
 @layer base {
   html {
-    @apply text-gray-600 bg-gray-100 scroll-smooth;
+    @apply text-gray-700 bg-gray-100 scroll-smooth;
   }
   h1 {
     @apply text-5xl;
@@ -23,45 +23,39 @@
     @apply text-lg;
   }
 
-  .block:not(:last-child) {
-    margin-bottom: 1.5rem;
-  }
+  //.block:not(:last-child) {
+  //  margin-bottom: 1.5rem;
+  //}
 }
 
 
 @tailwind components;
+//@import "styles/hello";
 
-@import "styles/hello";
-
-body {
-  //background-color: rgba(0,0,0,0.1);
-  // background: url(../media/turtle.jpg);
-}
-
-@layer components {
-  .btn--pop-anim {
-    animation: button-pop .25s ease-out;
-    transition-property: transform;
-    transition-duration: .2s;
-    transition-timing-function: cubic-bezier(.4, 0, .2, 1);
-
-    &:active:focus {
-      animation: none;
-      transform: scale(.95);
-    }
-  }
-  @keyframes button-pop {
-    0% {
-      transform: scale(.95);
-    }
-    40% {
-      transform: scale(1.02);
-    }
-    to {
-      transform: scale(1);
-    }
-  }
-}
+//@layer components {
+//  .btn--pop-anim {
+//    animation: button-pop .25s ease-out;
+//    transition-property: transform;
+//    transition-duration: .2s;
+//    transition-timing-function: cubic-bezier(.4, 0, .2, 1);
+//
+//    &:active:focus {
+//      animation: none;
+//      transform: scale(.95);
+//    }
+//  }
+//  @keyframes button-pop {
+//    0% {
+//      transform: scale(.95);
+//    }
+//    40% {
+//      transform: scale(1.02);
+//    }
+//    to {
+//      transform: scale(1);
+//    }
+//  }
+//}
 
 @layer components {
   .card {
@@ -76,8 +70,23 @@ body {
 #app input:not(:placeholder-shown) ~ label,
 #app input:-webkit-autofill ~ label
 {
-  margin-bottom: -1px;
+  margin-right: -1px;
 }
 
 
 @tailwind utilities;
+
+@layer utilities {
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    border: 0;
+    padding: 0;
+    white-space: nowrap;
+    clip-path: inset(100%);
+    clip: rect(0 0 0 0);
+    overflow: hidden;
+  }
+}

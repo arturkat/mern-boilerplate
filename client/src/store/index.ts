@@ -1,12 +1,16 @@
 import { configureStore } from '@reduxjs/toolkit'
 import counterReducer from './slices/counterSlice'
 import authReducer from './slices/authSlice'
+import postsReducer from './slices/postsSlice'
+import toasterReducer from './slices/toasterSlice'
 import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux'
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
+    posts: postsReducer,
     counter: counterReducer,
+    toaster: toasterReducer
   },
 })
 

@@ -1,7 +1,7 @@
 import React from 'react'
-import {useAppSelector, useAppDispatch} from '../../store'
-import {increment, decrement, incrementAsync} from '../../store/slices/counterSlice'
-import UButton from '../UI/UButton'
+import {useAppSelector, useAppDispatch} from '@/store'
+import {increment, decrement, incrementAsync} from '@/store/slices/counterSlice'
+import UButton from '@/components/UI/UButton'
 
 const Counter = () => {
   const count = useAppSelector(state => state.counter.value)

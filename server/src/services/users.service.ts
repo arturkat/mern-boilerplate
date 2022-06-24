@@ -40,7 +40,7 @@ class UsersService {
 
     if (userData.email) {
       const findUser: IUser = await this.users.findOne({email: userData.email})
-      if (findUser && findUser._id != userId) throw new HttpException(409, `You're email ${userData.email} already exists`)
+      if (findUser && String(findUser._id) != userId) throw new HttpException(409, `You're email ${userData.email} already exists`)
     }
 
     if (userData.password) {

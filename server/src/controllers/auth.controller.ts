@@ -1,7 +1,7 @@
 import {Request, Response, NextFunction} from 'express'
 import {IUser} from '@interfaces/user.interface'
 import {RequestWithUser} from '@interfaces/auth.interface'
-import {CreateUserDto, ResponseUserDto} from '@dtos/user.dto'
+import {CreateUserDto, ResetPasswordDto, ResponseUserDto } from '@dtos/user.dto'
 import AuthService from '@services/auth.service'
 
 class AuthController {
@@ -18,7 +18,7 @@ class AuthController {
         message: 'User signed up'
       })
     } catch (error) {
-      console.log(`-->> signUp:`, error)
+      // console.log(`-->> signUp:`, error)
       next(error)
     }
   }
@@ -89,6 +89,35 @@ class AuthController {
       next(error)
     }
   }
+
+  resetPassword = async (req:Request, res:Response, next:NextFunction) => {
+    try {
+      const userData: ResetPasswordDto = req.body
+
+      await this.authService.resetPassword(userData.email)
+
+      res.status(200).json({
+        message: 'Password reset email has been sent'
+      })
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  confirmPasswordReset = async (req:Request, res:Response, next:NextFunction) => {
+    try {
+      const token: string = req.params.token
+
+      await this.authService.confirmPasswordReset(token)
+
+      res.status(200).json({
+        message: 'Your password has been reset. The email with new password has been sent.'
+      })
+    } catch (error) {
+      next(error)
+    }
+  }
+
 }
 
 export default AuthController

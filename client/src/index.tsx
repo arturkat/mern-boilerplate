@@ -11,9 +11,9 @@ const container = document.getElementById('app')
 const root = createRoot(container!)
 
 root.render(
-  // <React.StrictMode>
-    <Provider store={store}>
+  <Provider store={store}>
+    {/*<React.StrictMode>*/}
       <App />
-    </Provider>
-  // </React.StrictMode>
+    {/*</React.StrictMode>*/}
+  </Provider>
 )
