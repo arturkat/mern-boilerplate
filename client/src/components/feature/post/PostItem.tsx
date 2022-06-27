@@ -8,7 +8,6 @@ import {deletePostAsync} from '@/store/slices/postsSlice'
 const PostItem = ({post}) => {
 
   const dispatch = useAppDispatch()
-  // const isPostLoading = useAppSelector(state => state.posts.isPostLoading)
 
   const [isPostLoading, setIsPostLoading] = useState(false)
 
@@ -22,15 +21,16 @@ const PostItem = ({post}) => {
         <small>isDummy: {String(post.isDummy)}</small>
       </div>
       <div className="flex self-end">
-        <UButton className={'w-auto'} gray
-                 onClick={() => {
-                   dispatch(deletePostAsync(post._id))
+        <UButton gray
+                 className={'w-auto'}
+                 isLoading={isPostLoading}
+                 onClick={async () => {
                    setIsPostLoading(true)
+                   await dispatch(deletePostAsync(post._id))
+                   setIsPostLoading(false)
                  }}
         >
-          {isPostLoading
-            ? <AiOutlineLoading3Quarters className={'animate-spin'} size={'1.2rem'} />
-            : <FaRegTrashAlt size={'1.2rem'} />}
+          <FaRegTrashAlt size={'1.2rem'} />
         </UButton>
       </div>
     </div>

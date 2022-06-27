@@ -35,7 +35,7 @@ export const ToasterContainer = styled.div`
 const Toast = ({toast}) => {
 
   const dispatch = useAppDispatch()
-  const deleteDelay = 2000
+  const deleteDelay = 3000
 
   useEffect(() => {
     setTimeout(() => {
@@ -43,14 +43,21 @@ const Toast = ({toast}) => {
     }, deleteDelay)
   })
 
+  let classes = ``
+  if (toast.type === 'error') {
+    classes = `bg-red-200 text-gray-700`
+  } else {
+    classes = `bg-white text-gray-900`
+  }
+
   return (
-    <div key={toast.createdAt} className="p-3 mb-2 overflow-hidden rounded-md shadow-md bg-white text-gray-700 text-sm opacity-95">
+    <div key={toast.createdAt} className={`${classes} flex p-3 mb-2 overflow-hidden rounded-md shadow-md  text-sm opacity-95`}>
+      <p className="grow pr-1">{toast.msg}</p>
       <div className="flex justify-end cursor-pointer">
         <IoClose onClick={() => {
           dispatch(deleteToast(toast.createdAt))
         }} />
       </div>
-      <p>{toast.msg}</p>
     </div>
   )
 }

@@ -4,17 +4,17 @@ import PropTypes from "prop-types";
 
 const useDebouncedRippleCleanUp = (rippleCount, duration, cleanUpFunction) => {
   useLayoutEffect(() => {
-    let bounce = null;
+    let bounceId = null;
     if (rippleCount > 0) {
-      clearTimeout(bounce);
+      clearTimeout(bounceId);
 
-      bounce = setTimeout(() => {
+      bounceId = setTimeout(() => {
         cleanUpFunction();
-        clearTimeout(bounce);
-      }, duration * 4);
+        clearTimeout(bounceId);
+      }, duration * 2);
     }
 
-    return () => clearTimeout(bounce);
+    return () => clearTimeout(bounceId);
   }, [rippleCount, duration, cleanUpFunction]);
 };
 

@@ -7,15 +7,15 @@ import ULoader from '@/components/UI/ULoader'
 import ContentLayout from '@/components/layout/ContentLayout'
 
 // Lazy loaded screens
-const AboutScreenLazy = React.lazy(() => import('../components/screens/AboutScreen'))
-const RootScreenLazy = React.lazy(() => import('../components/screens/RootScreen'))
-const AuthScreenLazy = React.lazy(() => import('../components/screens/AuthScreen'))
-const PostsScreenLazy = React.lazy(() => import('../components/screens/PostsScreen'))
-const GridsScreenLazy = React.lazy(() => import('../components/screens/GridsScreen'))
-const CounterScreenLazy = React.lazy(() => import('../components/screens/CounterScreen'))
-const StyleGuideScreenLazy = React.lazy(() => import('../components/screens/StyleGuideScreen'))
-const PrivateScreenLazy = React.lazy(() => import('../components/screens/PrivateScreen'))
-const NotFoundScreenLazy = React.lazy(() => import('../components/screens/NotFoundScreen'))
+const AboutScreenLazy = React.lazy(() => import('../screens/AboutScreen'))
+const RootScreenLazy = React.lazy(() => import('../screens/RootScreen'))
+const AuthScreenLazy = React.lazy(() => import('../screens/AuthScreen'))
+const PostsScreenLazy = React.lazy(() => import('../screens/PostsScreen'))
+const GridsScreenLazy = React.lazy(() => import('../screens/GridsScreen'))
+const CounterScreenLazy = React.lazy(() => import('../screens/CounterScreen'))
+const StyleGuideScreenLazy = React.lazy(() => import('../screens/StyleGuideScreen'))
+const PrivateScreenLazy = React.lazy(() => import('../screens/PrivateScreen'))
+const NotFoundScreenLazy = React.lazy(() => import('../screens/NotFoundScreen'))
 
 export const RequireAuth = ({ children }: { children: JSX.Element }) => {
   const authState = useAppSelector(state => state.auth)

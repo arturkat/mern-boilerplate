@@ -1,5 +1,5 @@
 import React from 'react'
-import Counter from '../feature/Counter'
+import Counter from '@comp/feature/Counter'
 
 const CounterScreen = () => {
   return (

@@ -1,5 +1,5 @@
 import React from 'react'
-import PostForm from  '@comp/feature/post/PostForm'
+import PostForm from '@comp/feature/post/PostForm'
 import PostsList from '@comp/feature/post/PostsList'
 
 const PostsScreen = () => {

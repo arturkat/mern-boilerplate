@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import UTextInput from '@comp/UI/UTextIntput'
 import UButton from '@comp/UI/UButton'
 import {setAuth} from '@/store/slices/authSlice'
-import {useAppDispatch} from '@/store'
+import {useAppDispatch, useAppSelector} from '@/store'
 import {createPostAsync, loadPosts} from '@/store/slices/postsSlice'
 import {IPostResponse} from '@/types/post'
 import {AiOutlineLoading3Quarters} from 'react-icons/ai'
@@ -11,8 +11,9 @@ import {FaRegTrashAlt} from 'react-icons/fa'
 const PostForm = () => {
 
   const dispatch = useAppDispatch()
+  const isPostsLoading = useAppSelector(store => store.posts.isLoading)
 
-  const [isCreateLoading, setIsCreateLoading] = useState(false)
+  const [isPostCreateLoading, setIsPostCreateLoading] = useState(false)
 
   const [fields, setFields] = useState({
     title: 'title n',
@@ -39,16 +40,20 @@ const PostForm = () => {
       </div>
 
       <div className="grid grid-flow-col-dense gap-2">
-        <UButton onClick={async () => {
-          setIsCreateLoading(true)
-          await dispatch(createPostAsync(fields))
-          setIsCreateLoading(false)
-        }}>
-          {isCreateLoading
-            ? <AiOutlineLoading3Quarters className={'block w-full animate-spin'} size={'1.2rem'} />
-            : 'Create Post'}
+        <UButton
+          isLoading={isPostCreateLoading}
+          onClick={async () => {
+            setIsPostCreateLoading(true)
+            await dispatch(createPostAsync(fields))
+            setIsPostCreateLoading(false)
+          }}
+        >
+          Create Post
         </UButton>
-        <UButton onClick={() => {dispatch(loadPosts())}}>
+        <UButton
+          isLoading={isPostsLoading}
+          onClick={() => {dispatch(loadPosts())}}
+        >
           Load Posts
         </UButton>
       </div>

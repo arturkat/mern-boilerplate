@@ -45,6 +45,15 @@ export default authSlice.reducer
 
 /* Async Actions */
 
+const errorToast = (error, dispatch) => {
+  if (!error) return
+  if (error?.response?.data) {
+    dispatch(setToast({msg: error.response?.data?.message, type: 'error'}))
+  } else if (error?.message) {
+    dispatch(setToast({msg: error.message, type: 'error'}))
+  }
+}
+
 export const loginUser = (email, password) => async (dispatch, getState) => {
   try {
     const loginResponse = await AuthService.login(email, password)
@@ -61,9 +70,8 @@ export const loginUser = (email, password) => async (dispatch, getState) => {
 
     return loginResponse
   } catch(error) {
-    // console.log('-> loginUser:error:', error)
+    errorToast(error, dispatch)
     console.log('-> loginUser:error:', error.response?.data)
-    dispatch(setToast(error.response?.data?.message))
   }
 }
 
@@ -79,8 +87,8 @@ export const signupUser = (email, password) => async function(dispatch, getState
 
     return signupResponse
   } catch(error) {
+    errorToast(error, dispatch)
     console.log('-> signupUser:error:', error.response?.data)
-    dispatch(setToast(error.response?.data?.message))
   }
 }
 
@@ -98,8 +106,8 @@ export const logoutUser = () => async function(dispatch, getState) {
 
     return logoutResponse
   } catch(error) {
+    errorToast(error, dispatch)
     console.log('-> logoutUser:error:', error.response?.data)
-    dispatch(setToast(error.response?.data?.message))
   }
 }
 
@@ -122,7 +130,7 @@ export const refreshUser = () => async function(dispatch, getState) {
 
     dispatch(setUser(null))
     dispatch(setAuth(false))
-    dispatch(setToast(error.response?.data?.message))
+    // errorToast(error, dispatch)
 
     // Cookies.remove('accessToken')
     // Cookies.remove('refreshToken')
@@ -141,8 +149,8 @@ export const authedUser = () => async (dispatch, getState) => {
 
     return authedResponse
   } catch(error) {
+    errorToast(error, dispatch)
     console.log('-> authedUser:error:', error.response?.data)
-    dispatch(setToast(error.response?.data?.message))
   }
 }
 

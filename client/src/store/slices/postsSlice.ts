@@ -1,6 +1,7 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 import PostsService from '@/services/PostsService'
 import {IPostRequest, IPostResponse } from '@/types/post'
+import {setToast} from '@/store/slices/toasterSlice'
 
 export interface IPostsState {
   posts: IPostResponse[]
@@ -39,6 +40,15 @@ export default authSlice.reducer
 
 /* Async Actions */
 
+const errorToast = (error, dispatch) => {
+  console.log(error)
+  if (error?.response?.data) {
+    dispatch(setToast({msg: error.response?.data?.message, type: 'error'}))
+  } else if (error?.message) {
+    dispatch(setToast({msg: error.message, type: 'error'}))
+  }
+}
+
 export const loadPosts = () => async (dispatch, getState) => {
   try {
     dispatch(setLoading(true))
@@ -47,25 +57,26 @@ export const loadPosts = () => async (dispatch, getState) => {
 
     dispatch(setPosts(postsResponse?.data?.data))
     dispatch(setLoading(false))
+    dispatch(setToast(postsResponse?.data?.message))
 
     return postsResponse
   } catch(error) {
+    errorToast(error, dispatch)
     console.log('-> loadPosts:error:', error.response?.data)
   }
 }
 
 export const createPostAsync = (post: IPostRequest) => async (dispatch, getState) => {
   try {
-    // dispatch(setLoading(true))
     const createPostResponse = await PostsService.createPost(post)
     console.log('-> createPostResponse:success:', createPostResponse)
 
     dispatch(setPost(createPostResponse?.data?.data))
-    // dispatch(setLoading(false))
+    dispatch(setToast(createPostResponse?.data?.message))
 
     return createPostResponse
   } catch(error) {
-    // dispatch(setLoading(false))
+    errorToast(error, dispatch)
     console.log('-> createPostResponse:error:', error.response?.data)
   }
 }
@@ -77,9 +88,11 @@ export const deletePostAsync = (id: string) => async (dispatch, getState) => {
     console.log('-> deletePostResponse:success:', deletePostResponse)
 
     dispatch(deletePost(id))
+    dispatch(setToast(deletePostResponse?.data?.message))
 
     return deletePostResponse
   } catch(error) {
+    errorToast(error, dispatch)
     console.log('-> createPostResponse:error:', error.response?.data)
   }
 }

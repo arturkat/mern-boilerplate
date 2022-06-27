@@ -3,6 +3,7 @@ import resolveConfig from 'tailwindcss/resolveConfig'
 import tailwindConfig from '@/../tailwind.config.js'
 import Ripple from './Ripple'
 import './ubutton.scss'
+import {AiOutlineLoading3Quarters} from 'react-icons/ai'
 
 const fullConfig = resolveConfig(tailwindConfig)
 
@@ -10,6 +11,8 @@ interface ButtonProps {
   children?: ReactNode
   className?: string
   gray?: boolean
+  isLoading?: boolean
+  disabled?: boolean
   [props:string]: Object
 }
 
@@ -17,6 +20,8 @@ const UButton: FC<ButtonProps> = ({
   children,
   className='',
   gray=false,
+  isLoading=false,
+  disabled=false,
   ...props
 }) => {
 
@@ -79,10 +84,17 @@ const UButton: FC<ButtonProps> = ({
     classes += className;
   }
 
+  let isDisabled = false;
+  if (disabled || isLoading) {
+    isDisabled = true
+  }
+
   return (
-    <button {...props} type="button" className={classes}>
-      {children}
-      {!props.disabled && <Ripple color={fullConfig.theme.colors.gray['50']} duration={1500} />}
+    <button {...props} disabled={isDisabled} type="button" className={classes} >
+      <div className={isLoading ? 'opacity-20':''}>{children}</div>
+      {isLoading &&
+        <div className="absolute inset-0 z-10 flex justify-center items-center bg-white-500/90"><AiOutlineLoading3Quarters className={'animate-spin'} size={'1.2rem'} /></div>}
+      {!isDisabled && <div className={isDisabled ? 'pointer-events-none':''}><Ripple color={fullConfig.theme.colors.gray['50']} duration={1500} /></div>}
     </button>
   )
 }

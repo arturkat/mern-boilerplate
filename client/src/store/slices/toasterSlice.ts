@@ -4,17 +4,22 @@ import {setLoading, setPosts} from '@/store/slices/postsSlice'
 
 class Toast {
   public msg: string
-  public createdAt: number
+  public type?: string
+  public createdAt?: number
 
-  constructor(msg) {
+  constructor(msg, type?) {
     this.msg = msg
+    if (type) {
+      this.type = type
+    }
     this.createdAt = Date.now()
   }
 }
 
 interface IToast {
   msg: string
-  createdAt: number
+  type?: string
+  createdAt?: number
 }
 
 export interface ToasterState {
@@ -29,10 +34,17 @@ export const toasterSlice = createSlice({
   name: 'toaster',
   initialState,
   reducers: {
-    setToast(state, action: PayloadAction<string>) {
-      const toast: IToast = new Toast(action.payload)
+    setToast(state, action: PayloadAction<IToast | string>) {
+      let toast: IToast;
+      if (typeof action.payload === 'string') {
+        toast = new Toast(action.payload)
+      } else {
+        const type = action.payload.type ?? ''
+        toast = new Toast(action.payload.msg, type)
+      }
       state.toasts.push({
         msg: toast.msg,
+        type: toast.type ?? '',
         createdAt: toast.createdAt
       })
     },

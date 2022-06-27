@@ -1,5 +1,9 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
+import {useAppDispatch, useAppSelector} from '@/store'
+import { setToast } from '@/store/slices/toasterSlice'
+import { store } from '@/store'
+
 
 export const API_URL = `http://localhost:8000/api`
 
@@ -28,6 +32,7 @@ $api.interceptors.response.use((config) => {
       localStorage.setItem('accessToken', accessToken)
       return $api.request(originalRequest);
     } catch (e) {
+      store.dispatch(setToast(`You aren't authorized`))
       console.log(`interceptor:user isn't authorized`)
     }
   }
